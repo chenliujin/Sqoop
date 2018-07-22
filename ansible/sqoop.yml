@@ -1,0 +1,20 @@
+
+- hosts: cluster-master
+  tasks:
+    - name: Download
+      shell: cd /tmp/; curl -O http://mirror.bit.edu.cn/apache/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+
+    - name: 解压
+      shell: cd /tmp; tar -xzf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+
+    - name: 移动 
+      shell: mv /tmp/sqoop-1.4.7.bin__hadoop-2.6.0 /opt/
+
+    - name: 软连接
+      shell: ln -s /opt/sqoop-1.4.7.bin__hadoop-2.6.0 /opt/sqoop
+
+    - name: 环境变量
+      copy:
+        src: ./etc/profile.d/sqoop.sh
+        dest: /etc/profile.d/
+
