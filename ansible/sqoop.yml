@@ -1,19 +1,18 @@
-
-- hosts: cluster-master
+- hosts: hadoop-master
   tasks:
-    - name: Download
-      shell: cd /tmp/; curl -O http://mirror.bit.edu.cn/apache/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+    #- name: 安装
+    #  copy: src=/opt/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz dest=/opt/
 
-    - name: 解压
-      shell: cd /tmp; tar -xzf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+    #- name: 解压
+    #  shell: tar -xzvf /opt/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz -C /opt/
 
-    - name: 移动 
-      shell: mv /tmp/sqoop-1.4.7.bin__hadoop-2.6.0 /opt/
+    - name: 软链接
+      file: src=/opt/sqoop-1.4.7.bin__hadoop-2.6.0 dest=/opt/sqoop state=link
 
-    - name: 软连接
-      shell: ln -s /opt/sqoop-1.4.7.bin__hadoop-2.6.0 /opt/sqoop
+    - name: MySQL JDBC
+      file: src=/usr/share/java/mysql-connector-java.jar dest=/opt/sqoop/lib/mysql-connector-java.jar state=link
 
-    - name: 环境变量
+    - name: ENV
       copy:
         src: ./etc/profile.d/sqoop.sh
         dest: /etc/profile.d/
