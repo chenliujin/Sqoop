@@ -8,6 +8,7 @@
 --query
 
 
+
 # 建表
 
 ## 数据类型
@@ -17,8 +18,17 @@
 jdbc:mysql://localhost/test?tinyInt1isBit=false
 ```
 
---map-column-hive status="TINYINT"
+```
+sqoop create-hive-table \
+  --connect "jdbc:oracle:thin:@192.168.13.1:1521/test" \
+  --username root --password 123456 \
+  --table test \
+  --hive-table myhive5 \
+  --hive-partition-key partition_time \
+  --map-column-hive id=String,number=String,modify_time=String
+```
 
+--map-column-hive status="TINYINT"
 --split-by
 
 ## Hive
