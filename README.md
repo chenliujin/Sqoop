@@ -1,3 +1,13 @@
+# JDBC
+
+- characterEncoding=utf-8
+
+
+# eval
+
+--query
+
+
 # 建表
 
 ## 数据类型
@@ -9,12 +19,16 @@ jdbc:mysql://localhost/test?tinyInt1isBit=false
 
 --map-column-hive status="TINYINT"
 
---query
 --split-by
 
 ## Hive
---create-hive-table
+--create-hive-table: 创建目标表，如果有会报错, 不建议大家使用–create-hive-table,建议事先创建好hive表
+--hive-database
 --hive-table
+--hive-import
+--hive-overwrite
+--hive-partition-key
+--hive-partition-value
 --delete-target-dir
 
 ```
