@@ -1,7 +1,7 @@
 # JDBC
 
-- characterEncoding=utf-8
-
+* characterEncoding=utf-8
+* tinyInt1isBit=false: tinyint(1): jdbc会把 tinyint(1) 认为是java.sql.Types.BIT,然后sqoop就会转为Boolean
 
 # eval
 
@@ -9,32 +9,24 @@
 
 
 
-# 建表
+--split-by
 
-## 数据类型
-* tinyint(1): jdbc会把 tinyint(1) 认为是java.sql.Types.BIT,然后sqoop就会转为Boolean
+# Hive
 
-```
-jdbc:mysql://localhost/test?tinyInt1isBit=false
-```
+## 1. 建表
 
 ```
 sqoop create-hive-table \
-  --connect "jdbc:oracle:thin:@192.168.13.1:1521/test" \
+  --connect jdbc:mysql://localhost/test?tinyInt1isBit=false \
   --username root --password 123456 \
-  --table test \
-  --hive-table myhive5 \
-  --hive-partition-key partition_time \
-  --map-column-hive id=String,number=String,modify_time=String
+  --table deal \
+  --hive-database olap_stock \
+  --hive-table deal \
+  --hive-partition-key deal_date \
+  --map-column-hive status=TINYINT 
 ```
 
---map-column-hive status="TINYINT"
---split-by
-
-## Hive
---create-hive-table: 创建目标表，如果有会报错, 不建议大家使用–create-hive-table,建议事先创建好hive表
---hive-database
---hive-table
+--create-hive-table: 创建目标表，如果有会报错, 不建议大家使用--create-hive-table,建议事先创建好hive表
 --hive-import
 --hive-overwrite
 --hive-partition-key
