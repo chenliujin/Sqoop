@@ -11,7 +11,9 @@ sqoop import \
   --hive-table deal \
   --delete-target-dir
 
+# * select 字段需要按表定义的顺序，分区字段在最后
+
 #hive > SET hive.exec.dynamic.partition=true;  
 #hive > SET hive.exec.dynamic.partition.mode=nonstrict; 
 #hive > SET hive.exec.max.dynamic.partitions.pernode=1000;
-#hive > insert overwrite table olap_stock.deal partition(deal_date) select * from raw_stock.deal;
+#hive > insert overwrite table olap_stock.deal partition(deal_date) select deal_id, customer_id, stock_code, deal_type, price, volume, total, stamp_tax, poundage, transfer_fee, sundry_fees, amount, status, date_added, last_modified, deal_date from raw_stock.deal;
