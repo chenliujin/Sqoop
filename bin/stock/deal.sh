@@ -7,9 +7,9 @@ sqoop import \
   --table deal \
   -m 1 \
   --hive-import \
+  --hive-overwrite \
   --hive-database raw_stock \
-  --hive-table deal \
-  --delete-target-dir
+  --hive-table deal
 
 # * select 字段需要按表定义的顺序，分区字段在最后
 
