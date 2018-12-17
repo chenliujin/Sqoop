@@ -24,8 +24,8 @@ for row in results:
   date = row[0].strftime('%Y-%m-%d')
   dates.append(date)
   print('=== Sqoop import: ' + date + ' ===')
-  #os.system('/opt/sqoop/bin/day_deal.sh ' + date)
+  os.system('/opt/sqoop/bin/day_deal.sh ' + date)
 
 print('=== Kylin ===')
 
-#os.system('/opt/sqoop/bin/.py --inputs ' + ' '.join(dates))
+os.system('/opt/sqoop/bin/build_cube.py --inputs ' + ' '.join(dates))

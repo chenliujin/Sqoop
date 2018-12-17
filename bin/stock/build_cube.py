@@ -30,6 +30,8 @@ def cube_refresh(cube, startTime, endTime):
 
   r = requests.put(url, headers=headers, auth=auth, data=json.dumps(data))
 
+  print('=== Cube refresh: ' + cube + ' ===')
+
   print(r.status_code)
 
 
