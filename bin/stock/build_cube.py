@@ -1,10 +1,19 @@
 #!/usr/bin/python3
+import argparse
 import requests
 import time
 import json
-import argparse
 
-def cube_segment_refresh(cube, startTime, endTime):
+# Param
+
+parser = argparse.ArgumentParser(description='')
+parser.add_argument('--inputs', type=str, nargs='+', help='增量更新过的日期，用来刷新 cube 对应的 segment')
+args = parser.parse_args()
+
+
+# function
+
+def cube_refresh(cube, startTime, endTime):
   url = 'http://www.chenliujin.com/kylin/api/cubes/' + cube + '/build'
 
   auth=('ADMIN', 'KYLIN')
@@ -30,12 +39,6 @@ def cube_segment_refresh(cube, startTime, endTime):
 # 有，refresh segment
 # 无，build segment
 
-parser = argparse.ArgumentParser(description='')
-parser.add_argument('--inputs', type=str, nargs='+', help='增量更新过的日期，用来刷新 cube 对应的 segment')
-args = parser.parse_args()
-
-inputs = print(args.inputs)
-
 
 url = 'http://www.chenliujin.com/kylin/api/cubes'
 
@@ -53,7 +56,7 @@ rs = r.json()
 results = {}
 
 for segment in rs[0]['segments']:
-  for input in inputs:
+  for input in args.inputs:
     t = int(time.mktime(time.strptime(input + ' 08:00:00', '%Y-%m-%d %H:%M:%S')) * 1000)
 
     if segment['date_range_start'] <= t and t < segment['date_range_end'] :
@@ -61,4 +64,4 @@ for segment in rs[0]['segments']:
     # 不存在，build 新的 segment
 
 for result in results:
-  cube_segment_refresh('price_distribute', result['startTime'], result['endTime'])
+  cube_refresh('price_distribute', result['startTime'], result['endTime'])
