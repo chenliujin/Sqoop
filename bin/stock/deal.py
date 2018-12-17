@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 
 import time
+import datetime
 import pymysql
 import os
 
+
 print('=== Sqoop import ===')
 
-starttime = time.strftime('%Y-%m-%d', time.localtime(time.time())) + ' 00:00:00'
+#starttime = time.strftime('%Y-%m-%d', time.localtime(time.time())) + ' 00:00:00'
+
+yesterday = datetime.datetime.now() + datetime.timedelta(days=-1)
+starttime = yesterday.strftime('%Y-%m-%d 00:00:00')
 
 sql = 'SELECT distinct deal_date FROM stock.deal where last_modified >= "' + starttime + '"'
 
