@@ -31,8 +31,7 @@ def cube_refresh(cube, startTime, endTime):
   r = requests.put(url, headers=headers, auth=auth, data=json.dumps(data))
 
   print('=== Cube refresh: ' + cube + ' ===')
-
-  print(r.status_code)
+  print('status code: ' + r.status_code)
 
 
 
@@ -65,5 +64,5 @@ for segment in rs[0]['segments']:
       results[segment['date_range_start']] = {"startTime": segment['date_range_start'], "endTime": segment['date_range_end']}
     # 不存在，build 新的 segment
 
-for result in results:
+for result in results.values():
   cube_refresh('price_distribute', result['startTime'], result['endTime'])
