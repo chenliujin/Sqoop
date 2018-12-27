@@ -15,7 +15,7 @@ starttime = yesterday.strftime('%Y-%m-%d 00:00:00')
 
 sql = 'SELECT distinct deal_date FROM stock.deal where last_modified >= "' + starttime + '"'
 
-db = pymysql.connect(host='172.20.10.6', port=3307, user='root', password='chenliujin', db='stock')
+db = pymysql.connect(host='172.20.10.8', port=3307, user='root', password='chenliujin', db='stock')
 
 cursor = db.cursor()
 
