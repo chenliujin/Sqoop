@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 # function
 
-def cube_refresh(cube, startTime, endTime):
+def build_cube(cube, startTime, endTime, buildType):
   url = 'http://www.chenliujin.com/kylin/api/cubes/' + cube + '/build'
 
   auth=('ADMIN', 'KYLIN')
@@ -25,21 +25,18 @@ def cube_refresh(cube, startTime, endTime):
   data = {
       "startTime": startTime,
       "endTime": endTime,
-      "buildType": "REFRESH"
+      "buildType": buildType 
   }
 
   r = requests.put(url, headers=headers, auth=auth, data=json.dumps(data))
 
-  print('=== Cube refresh: ' + cube + ' ===')
-  print('status code: ' + r.status_code)
-
-
+  print('=== build cube: ' + cube + ' ' + buildType + ' ===')
+  print('status code: ' + str(r.status_code))
 
 # 传入日期数组
 # 获取 segment 列表
 # 有，refresh segment
 # 无，build segment
-
 
 url = 'http://www.chenliujin.com/kylin/api/cubes'
 
@@ -56,13 +53,45 @@ rs = r.json()
 
 results = {}
 
-for segment in rs[0]['segments']:
-  for input in args.inputs:
+for input in args.inputs:
+
+  exist = 0
+  startTime = 0
+
+  for segment in rs[0]['segments']:
     t = int(time.mktime(time.strptime(input + ' 08:00:00', '%Y-%m-%d %H:%M:%S')) * 1000)
 
+    if 'endTime' not in vars():
+      endTime = t;
+
     if segment['date_range_start'] <= t and t < segment['date_range_end'] :
-      results[segment['date_range_start']] = {"startTime": segment['date_range_start'], "endTime": segment['date_range_end']}
-    # 不存在，build 新的 segment
+      exist = 1
+      results[segment['date_range_start']] = {
+          "startTime": segment['date_range_start'], 
+          "endTime": segment['date_range_end'],
+          "buildType": 'REFRESH'
+      }
+    elif segment['date_range_end'] <= t and startTime < segment['date_range_end']:
+      startTime = segment['date_range_end']
+
+  if exist == 0 : # 不存在，build 新的 segment
+
+    if startTime in results.keys() and 'endTime' in results[startTime].keys() and results[startTime]['endTime'] < t:
+      endTime = t;
+
+    results[startTime] = {
+        "startTime": startTime, 
+        "endTime": endTime, 
+        "buildType": 'BUILD'
+    }
+
+  #print('ERROR: cube not exists!')
+  #print(startTime)
+  #print(t)
+
+#print(results)
+
+
 
 for result in results.values():
-  cube_refresh('price_distribute', result['startTime'], result['endTime'])
+  build_cube('price_distribute', result['startTime'], result['endTime'], result['buildType'])
