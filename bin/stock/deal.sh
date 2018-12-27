@@ -6,6 +6,7 @@ sqoop import \
   --password chenliujin \
   --table deal \
   -m 1 \
+  --direct \
   --hive-import \
   --hive-overwrite \
   --hive-database raw_stock \
