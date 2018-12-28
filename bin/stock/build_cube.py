@@ -69,14 +69,14 @@ for input in args.inputs:
   startTime = 0
 
   for segment in rs[0]['segments']:
-    if segment['date_range_start'] <= t and t < segment['date_range_end'] :
+    if segment['date_range_start'] <= t and t <= segment['date_range_end'] :
       exist = 1
       results[segment['date_range_start']] = {
           "startTime": segment['date_range_start'], 
           "endTime": segment['date_range_end'],
           "buildType": 'REFRESH'
       }
-    elif segment['date_range_end'] <= t and startTime < segment['date_range_end']:
+    elif segment['date_range_end'] < t and startTime < segment['date_range_end']:
       startTime = segment['date_range_end']
 
   if exist == 0 : # 不存在，build 新的 segment
