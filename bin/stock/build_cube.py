@@ -15,6 +15,10 @@ args = parser.parse_args()
 # function
 
 def build_cube(cube, startTime, endTime, buildType):
+  if startTime >= endTime:
+    print('startTime >= endTime')
+    return False
+
   url = 'http://www.chenliujin.com/kylin/api/cubes/' + cube + '/build'
 
   auth=('ADMIN', 'KYLIN')
