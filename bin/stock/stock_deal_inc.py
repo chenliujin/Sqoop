@@ -15,7 +15,7 @@ starttime = yesterday.strftime('%Y-%m-%d 00:00:00')
 
 sql = 'SELECT distinct deal_date FROM stock.deal where last_modified >= "' + starttime + '"'
 
-db = pymysql.connect(host='172.20.10.8', port=3307, user='root', password='chenliujin', db='stock')
+db = pymysql.connect(host='mysql.chenliujin.com', port=3306, user='root', password='chenliujin', db='stock')
 
 cursor = db.cursor()
 
@@ -29,8 +29,8 @@ for row in results:
   date = row[0].strftime('%Y-%m-%d')
   dates.append(date)
   print('=== Sqoop import: ' + date + ' ===')
-  os.system('/opt/sqoop/bin/day_deal.sh ' + date)
+  os.system('/opt/sqoop/bin/stock_deal.sh ' + date)
 
-print('=== Kylin ===')
+#print('=== Kylin ===')
 
-os.system('/opt/sqoop/bin/build_cube.py --inputs ' + ' '.join(dates))
+#os.system('/opt/sqoop/bin/build_cube.py --inputs ' + ' '.join(dates))
