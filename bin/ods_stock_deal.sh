@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# 使用 hive 用户 执行
+
 # --direct 需要 mysqldump，在所有节点安装 mysql-community-client 
 # yum install -y mysql-community-client
+
+su hive;
 
 sqoop import \
   --connect jdbc:mysql://mysql.chenliujin.com/stock?tinyInt1isBit=false \
