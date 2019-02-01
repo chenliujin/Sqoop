@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# --direct 需要 mysqldump，安装 mysql-community-client 
+# yum install -y mysql-community-client
+
 sqoop import \
   --connect jdbc:mysql://mysql.chenliujin.com/stock?tinyInt1isBit=false \
   --username root \
