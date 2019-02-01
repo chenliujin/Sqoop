@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# --direct 需要 mysqldump，安装 mysql-community-client 
+# --direct 需要 mysqldump，在所有节点安装 mysql-community-client 
 # yum install -y mysql-community-client
 
 sqoop import \
