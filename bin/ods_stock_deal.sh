@@ -12,6 +12,7 @@ sqoop import \
   --direct \
   --hive-import \
   --hive-overwrite \
+  --delete-target-dir \
   --hive-database ods_stock \
   --hive-table deal
 
